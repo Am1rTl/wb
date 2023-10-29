@@ -8,19 +8,7 @@ import math
 model = YOLO("yolo-Weights/yolov8n.pt")
 
 # object classes
-classNames = ["person", "bicycle", "car", "motorbike", "aeroplane", "bus", "train", "truck", "boat",
-              "traffic light", "fire hydrant", "stop sign", "parking meter", "bench", "bird", "cat",
-              "dog", "horse", "sheep", "cow", "elephant", "bear", "zebra", "giraffe", "backpack", "umbrella",
-
-              "handbag", "tie", "suitcase", "frisbee", "skis", "snowboard", "sports ball", "kite", "baseball 
-bat",
-              "baseball glove", "skateboard", "surfboard", "tennis racket", "bottle", "wine glass", "cup",
-              "fork", "knife", "spoon", "bowl", "banana", "apple", "sandwich", "orange", "broccoli",
-              "carrot", "hot dog", "pizza", "donut", "cake", "chair", "sofa", "pottedplant", "bed",
-              "diningtable", "toilet", "tvmonitor", "laptop", "mouse", "remote", "keyboard", "cell phone",
-              "microwave", "oven", "toaster", "sink", "refrigerator", "book", "clock", "vase", "scissors",
-              "teddy bear", "hair drier"
-              ]
+classNames = ["person"]
 
 while True:
     img = ImageGrab.grab(bbox=(960, 0, 1920, 1080))
@@ -40,13 +28,14 @@ while True:
             confidence = math.ceil((box.conf[0] * 100)) / 100
             cls = int(box.cls[0])
 
-            org = [x1, y1]
-            font = cv2.FONT_HERSHEY_SIMPLEX
-            fontScale = 1
-            color = (255, 0, 0)
-            thickness = 2
+            if cls == 0:  # Проверка, что cls равно 0 (единственный класс "person")
+                org = [x1, y1]
+                font = cv2.FONT_HERSHEY_SIMPLEX
+                fontScale = 1
+                color = (255, 0, 0)
+                thickness = 2
 
-            cv2.putText(img_np, classNames[cls], org, font, fontScale, color, thickness)
+                cv2.putText(img_np, classNames[cls], org, font, fontScale, color, thickness)
 
     # Изменение размера окна на 500x500 пикселей
     img_np = cv2.resize(img_np, (960, 1080))
@@ -57,4 +46,3 @@ while True:
 
 cv2.destroyAllWindows()
 
-    
